@@ -1,0 +1,103 @@
+// Copyright (c) 2013 Zhe Wang
+// Email: wzedmund@gmail.com
+// History: 21/12/2014
+// Version: 1.0.0
+package sys;
+
+public class PrintStream adds OutStream
+{
+	public native void printByte(byte b); 
+	
+	@Override
+	public bool write(int b)
+	{
+		printByte((byte)b);
+		return true;
+	}
+	
+	@Override
+	public bool writeBytes(byte[] b, int off, int len)
+	{
+		int i;
+		for(i = off;i<len;i++)
+		{
+			printByte(b[i]);
+		}
+		return true;
+	}
+	
+	@Override
+	public void flush()
+	{
+	
+	}
+	
+	@Override
+	public void close()
+	{
+	
+	}
+	
+	public void print(char b)
+	{
+		printByte((byte)b);
+	}
+	
+	public void print(byte b)
+	{
+		printByte(b);
+	}
+	
+	public void print(int i)
+	{
+		String s;
+		s = System.int2Str(i);
+		print(s);
+	}
+	
+	public void print(byte[] b)
+	{
+		int i;
+		int len = b.length;
+		for(i=0;i<len;i++)
+		{
+			printByte(b[i]);
+		}
+	}
+	
+	public void print(char[] b)
+	{
+		int i;
+		int len = b.length;
+		for(i=0;i<len;i++)
+		{
+			printByte((byte)b[i]);
+		}
+	}
+	
+	public void print(bool b)
+	{
+		if(b)
+			print("true");
+		else
+			print("false");
+	}
+	
+	public void print(String s)
+	{
+		int i;
+		char[] b = s.getChars();
+		int len = s.length();
+		for(i=0;i<len;i++)
+		{
+			//stop printing if meet null terminator
+			if(b[i]==0) break;
+			printByte((byte)b[i]);
+		}	
+	}
+	
+	public void newLine()
+	{
+		printByte((byte)'\n');
+	}
+}

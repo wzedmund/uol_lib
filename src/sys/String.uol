@@ -1,0 +1,181 @@
+// Copyright (c) 2013 Zhe Wang
+// Email: wzedmund@gmail.com
+// History: 21/12/2014
+// Version: 1.0.0
+package sys;
+
+public class String
+{
+	public char[] str;
+	private int length;
+	
+	public void String(int len)
+	{
+		length = len;
+		str = new char[len];
+	}
+	/*
+	** 获取字符数组中某个字符
+	** 参数：
+	** index = 字符索引
+	*/	
+	public char charAt(int index)
+	{
+		return str[index];
+	}
+	
+	/*
+	** 获取字符串长度
+	** 参数：
+	*/	
+	public int length()
+	{
+		return str.length;
+	}
+	
+	/*
+	** 获取字符串类中数组
+	** 参数：
+	*/	
+	public char[] getChars()
+	{
+		return str;
+	}
+	
+	/*
+	** 
+	** 参数：
+	*/	
+	public void setChars(int i,char c)
+	{
+		str[i] = c;
+	}
+	
+	/*
+	** 比较两个字符串
+	** 参数：
+	** s = 字符串对象
+	** 返回值：
+	** false = 不等，true = 相等
+	*/	
+	public bool equals(String s)
+	{
+		int count;
+		if(length != s.length())
+			return false;
+		
+		for(count=0;count<length;count=count+1)
+		{
+			if(str[count]!=s.charAt(count))
+			{
+				return false;
+			}
+		}
+		return true;	
+	}
+	/*
+	** 比较两个字符串区域
+	** 参数：
+	** s = 字符串对象
+	** offset = 偏移地址
+	** len = 长度
+	** 返回值：
+	** false = 不等，true = 相等
+	*/
+	public bool regionEquals(String s, int offset, int len)
+	{
+		int index;
+		char[] src = s.getChars();
+
+		if(len>length || len>s.length())
+		{
+			return false;
+		}
+		
+		if(offset >= len-1)
+		{
+			return false;
+		}
+		
+		for(index=offset;index<len;index=index+1)
+		{
+			if(src[index]!=str[index])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/*
+	** 替换字符串中某个字符
+	** 参数：
+	** oldChar = 被替换的字符
+	** newChar = 新字符
+	** 返回值：
+	** 新的字符串对象
+	*/
+	public String replaceChar(char oldChar, char newChar)
+	{
+		String s = new String(length);
+		char[] dst = s.getChars();
+		int index;
+		for(index=0;index<length;index++)
+		{
+			dst[index] = str[index];
+			if(str[index]==oldChar)
+			{
+				dst[index] = newChar;
+			}
+		}
+		return s;
+	}
+	
+	
+	public static void intToStr(int i,String s)
+	{
+		bool flag = false;
+		int c;
+		int index;
+		int count = 0;
+		if(i==0)
+		{
+			s.setChars(count++,(char)(i+48));
+			return;
+		}
+		if(i>0)
+		{
+			for(index = 1000000000;index>0;index=index/10)
+			{
+				c = (i/index%10);
+				if(c!=0&&flag == false)
+				{
+					flag = true;
+					if(c<0)
+						s.setChars(count++,'-');
+				}
+				if(flag==true)
+				{
+					s.setChars(count++,(char)(c+48));
+				}
+			}
+		}
+		else
+		{
+			for(index = 1000000000;index>0;index=index/10)
+			{
+				c = (-i/index%10);
+				if(c!=0&&flag == false)
+				{
+					flag = true;
+					s.setChars(count++,'-');
+				}
+				if(flag==true)
+				{
+					s.setChars(count++,(char)(c+48));
+				}
+			}
+		}
+	}
+}
+

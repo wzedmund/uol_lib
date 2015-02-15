@@ -1,0 +1,12 @@
+// Copyright (c) 2013 Zhe Wang
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 1.0.0
+package graphic;
+import sys;
+
+public module ActionListener
+{
+	public abstract void actionPerformed(ActionEvent e);
+}

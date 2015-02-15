@@ -1,0 +1,98 @@
+// Copyright (c) 2013 Zhe Wang
+// Email: wzedmund@gmail.com
+// History:21/12/2014
+// Version:1.0.0
+package sys;
+
+public class System
+{
+	public static PrintStream out = new PrintStream();
+	
+	//allocate num bytes of memory or return null on error
+	public native byte[] malloc(int num);
+	
+	//free memory allocated by malloc
+	public native void free(byte[] b);
+	
+	//Copy num bytes from the source byte array to the destination byte array
+	public native void copy(byte[] src, int srcOff, byte[] dest, int destOff, int num);
+	
+	//convert int to String
+	public native String int2Str(int v);
+	
+	//convert hex to String
+	public native String hex2Str(int v);
+	
+	//convert long to String
+	public native String long2Str(long v);
+	
+	//convert long hex to String
+	public native String longHex2Str(long v);
+	
+	//convert float to String
+	public native String float2Str(float v);
+	
+	//convert double to String
+	public native String double2Str(double v);
+	
+	//Compare two byte arrays for equality. If equal return 0, 
+	//if a is less than b return -1, if a greater than b return 1.
+	public native int compareBytes(byte[] a, int aOff, byte[] b, int bOff, int len);
+	
+	//thread sleeps
+	public native void sleep(int time);
+	
+	//execute another program inside current program
+	public native int exec(String path);
+	
+	//generate random int value
+	public native int rand();
+	
+	//get current cpu ticks
+	public native long ticks();
+	
+	//exit current program
+	public native void exit();
+	
+	public interrupt void task()
+	{
+		while(true)
+		{
+			System.out.print("thread 1 per 1 sec\n");
+			sleep(1000);
+		}
+	}
+	
+	public interrupt void task1()
+	{
+		while(true)
+		{
+			System.out.print("thread 2 per 1.1 sec\n");
+			sleep(1100);
+		}
+	}
+	
+	public void tt(String s)
+	{
+		test t = new test()
+		{
+			@Override
+			public void print(String s)
+			{
+				System.out.print(s);
+			}
+		};
+		t.print(t.s);
+		System.out.print(true);
+	}
+	
+	public static void main()
+	{
+		System s = new System();
+		s.tt("");
+		while(true)
+		{
+			
+		}
+	}
+}

@@ -1,0 +1,200 @@
+// Copyright (c) 2013 Zhe Wang
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 1.0.0
+package graphic;
+import sys;
+
+public module UComponent
+{
+	define int IS_PRESSED_MASK = 0x0001;
+	define int PAINT_ALL_MASK = 0x0002;
+	define int PAINT_CHILDREN_MASK = 0x0004;
+	define int IS_SELECTED_MASK = 0x0008;
+	define int IS_VISIBLE_MASK = 0x0010;
+
+	public int x_axis;
+	public int y_axis;
+	public int width;
+	public int height;
+	public int status;
+	public UComponent parent;
+	public ActionListener listener;
+	public ActionEvent event;
+
+	public abstract void onPaint();//initial state of painting
+	
+	public abstract void paintAll();//paint everything again	
+	
+	public abstract void paintChildren();//paint children components
+	
+	public abstract bool isInSelection(int x,int y);
+	
+	public void setStatus(int i)
+	{
+		status = status | i;
+	}
+	
+	public void clearStatus(int i)
+	{
+		status = status & (~IS_SELECTED_MASK);
+	}	
+	
+	public bool getStatus(int i)
+	{
+		if((status&i)>0)
+			return true;
+		else
+			return false;
+	}
+	
+	public bool getSelected()
+	{
+		if((status&IS_SELECTED_MASK)>0)
+			return true;
+		else
+			return false;
+	}
+	
+	public void setSelected(bool sel)
+	{
+		if(sel!=getSelected())
+		{
+			if(sel)
+			{
+				status = status | IS_SELECTED_MASK;
+			}
+			else
+			{
+				status = status & (~IS_SELECTED_MASK);
+			}
+			paintAll();
+		}
+	}
+	
+	public void setXY(int x,int y)
+	{
+		x_axis = x;
+		y_axis = y;
+	}
+	
+	public int getX()
+	{
+		if(parent!=null)
+			return x_axis + parent.getX();
+		else
+			return x_axis;
+	}
+	
+	public int getY()
+	{
+		if(parent!=null)
+			return y_axis + parent.getY();
+		else
+			return y_axis;
+	}
+	
+	public void setWH(int w,int h)
+	{
+		height = h;
+		width  = w;
+	}
+	
+	public int getWidth()
+	{
+		return width;
+	}
+	
+	public int getHeight()
+	{
+		return height;
+	}
+	
+	public abstract void touchPressed(TouchEvent e);
+	
+	public abstract void touchReleased(TouchEvent e);
+	
+	public abstract void touchHeld(TouchEvent e);
+	
+	public void setVisibility(bool v)
+	{
+		if(v)
+		{
+			if(getVisibility()==false)
+			{
+				status = status | IS_VISIBLE_MASK;
+				paintAll();
+				if(parent!=null)
+					parent.paintAll();
+			}
+		}
+		else
+		{
+			if(getVisibility())
+			{
+				status = status & (~IS_VISIBLE_MASK);
+				paintAll();
+				if(parent!=null)
+					parent.paintAll();
+			}
+		}
+	}
+	
+	public bool getVisibility()
+	{
+		if((status&IS_VISIBLE_MASK)>0)
+			return true;
+		else
+			return false;
+	}
+	
+	
+
+	public void addActionListener(ActionListener a)
+	{
+		listener = a;
+	}
+	
+	public void removeActionListener(ActionListener a)
+	{
+		if(listener == a)
+		{
+			listener = null;
+		}
+	}
+	
+	public abstract void add(UComponent g);
+	
+	public abstract void remove(UComponent g);
+	
+	public void setParent(UComponent g)
+	{
+		parent = g;
+	}
+	
+	public UComponent getParent()
+	{
+		return parent;
+	}
+	
+	public void setPressed(bool b)
+	{
+		if(b)
+		{
+			status = status | IS_PRESSED_MASK;
+		}
+		else
+		{
+			status = status & (~IS_PRESSED_MASK);
+		}
+	}
+	
+	public bool getPressed()
+	{
+		if((status&IS_PRESSED_MASK)>0)
+			return true;
+		else
+			return false;
+	}
+}

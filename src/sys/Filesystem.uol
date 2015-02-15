@@ -1,0 +1,78 @@
+// Copyright (c) 2013 Zhe Wang
+// Email: wzedmund@gmail.com
+// History: 21/12/2014
+// Version: 1.0.0
+package sys;
+
+public class Filesystem
+{
+	public bool open(File file, String mode)
+	{
+		file.fp = doOpen(file.name, mode);
+		return file.fp != null;
+	}
+	
+	public bool close(File file)
+	{
+		if (null == file.fp) return true;
+		bool ok = doClose(file.fp); 
+		file.fp = null;
+		return ok;
+	}
+	
+	public void flush(File file)
+	{
+		doFlush(file.fp);
+	}
+	
+	public int size(File file)
+	{
+		return doSize(file.name);
+	}
+	
+	public int tell(File file)
+	{
+		return doTell(file.fp);
+	}
+	
+
+	public bool seek(File file, int pos)
+	{ 
+		return doSeek(file.fp, pos);
+	}  
+
+
+	public int read(File file) 
+	{ 
+		return doRead(file.fp);
+	}
+
+
+	public int readBytes(File file, byte[] b, int off, int len) 
+	{
+		return doReadBytes(file.fp, b, off, len);
+	}
+
+
+	public bool write(File file, int b)
+	{
+		return doWrite(file.fp, b);
+	}
+
+
+	public bool writeBytes(File file, byte[] b, int off, int len)
+	{
+		return doWriteBytes(file.fp, b, off, len);
+	}
+	
+	public native int doSize(String name);
+	public native Obj doOpen(String name, String mode);
+	public native int doRead(Obj fp);
+	public native int doReadBytes(Obj fp, byte[] b, int off, int len);
+	public native bool doWrite(Obj fp, int b);
+	public native bool doWriteBytes(Obj fp, byte[] b, int off, int len);
+	public native bool doSeek(Obj fp, int pos);
+	public native int  doTell(Obj fp);
+	public native void doFlush(Obj fp);
+	public native bool doClose(Obj fp);
+}

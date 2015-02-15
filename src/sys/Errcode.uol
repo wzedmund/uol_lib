@@ -1,0 +1,36 @@
+// Copyright (c) 2013 Zhe Wang
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 1.0.0
+package sys;
+
+public class Errcode
+{
+	define int OK = 0; //
+	define int FILE_OPEN_ERR = 1;//
+	define int FILE_READ_ERR = 2;//          		
+	define int MALLOC_CODE_ERR = 3;//      			
+	define int MALLOC_STACK_ERR = 4;//						
+	define int MALLOC_TRYCATCH_ERR = 5;//				
+	define int MALLOC_STRINGPOOL_ERR = 6;//			
+	define int MALLOC_STATIC_ERR = 7;//			
+	define int MALLOC_NEW_ERR = 8;//					
+
+	define int BAD_CODE_SIZE_ERR = 9;//				
+	define int BAD_STRING_POOL_SIZE_ERR = 10;//			
+	define int BAD_STATIC_SIZE_ERR = 11;//			
+
+	define int UNKNOWN_OPCODE_ERR = 12;// 				
+	define int INVALID_NATIVE_ERR = 13;//			
+	define int NULL_POINTER_ERR = 14;//					
+	define int STACK_OVERFLOW_ERR = 15;//			
+	define int INVALID_PARAM_LEN_ERR = 16;//			
+
+	define int UNKNOWN_ERR = 17;//               		
+	define int OUT_OF_BOUND_ERR = 18;//              		
+	define int DIVIDED_BY_ZERO_ERR = 19;//		  		
+	define int VM_EXIT_ERR = 20;// 					  		
+	define int INVALID_JUMP_ADDRESS_ERR = 21;//
+	define int INVALID_OBJ_CAST_ERR = 22;//
+}

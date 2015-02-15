@@ -1,0 +1,16 @@
+// Copyright (c) 2013 Zhe Wang
+// Email: wzedmund@gmail.com
+// History:21/12/2014
+// Version:1.0.0
+package sys;
+
+public module OutStream
+{
+	public abstract bool write(int b);
+	
+	public abstract bool writeBytes(byte[] b,int off,int len);
+	
+	public abstract void close();
+	
+	public abstract void flush();
+}

@@ -1,0 +1,44 @@
+// Copyright (c) 2013 Zhe Wang
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 1.0.0
+package graphic;
+import sys;
+
+public class ActionEvent
+{	
+	private int icmd;
+	private String scmd;
+	private UComponent comp;
+	
+	public void setComponent(UComponent g)
+	{
+		comp = g;
+	}
+	
+	public UComponent getComponent()
+	{
+		return comp;
+	}
+	
+	public int getIntCommand()
+	{
+		return icmd;
+	}
+
+	public void setIntCommand(int i)
+	{
+		icmd = i;
+	}
+
+	public String getStringCommand()
+	{
+		return scmd;
+	}
+
+	public void setStringCommand(String s)
+	{
+		scmd = s;
+	}
+}
