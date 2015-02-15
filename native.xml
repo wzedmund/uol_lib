@@ -1,0 +1,53 @@
+<!-- 
+Copyright (c) 2013 Zhe Wang
+如有疑问，欢迎发邮件到下面的邮箱：
+wzedmund@gmail.com
+History:
+26/4/2014
+版本
+1.0.0
+ -->
+ 
+<native>
+	<vm endian = "little" debug = "false" stack = "512" output = "output"/>
+	
+	<!-- Sys APIs-->
+	<function name = "sys_PrintStream_printByte" id1 = "0" id2 = "0" param = "byte" returnType = "void" />
+	<function name = "sys_System_malloc" id1 = "0" id2 = "1" param = "int" returnType = "byte[]" />	
+	<function name = "sys_System_free" id1 = "0" id2 = "2" param = "byte[]" returnType = "void" />
+	<function name = "sys_System_copy" id1 = "0" id2 = "3" param = "byte[] int byte[] int int" returnType = "void" />
+	<function name = "sys_System_int2Str" id1 = "0" id2 = "4" param = "int" returnType = "String" />
+	<function name = "sys_System_hex2Str" id1 = "0" id2 = "5" param = "int" returnType = "String" />
+	<function name = "sys_System_long2Str" id1 = "0" id2 = "6" param = "long" returnType = "String" />
+	<function name = "sys_System_longHex2Str" id1 = "0" id2 = "7" param = "long" returnType = "String" />
+	<function name = "sys_System_float2Str" id1 = "0" id2 = "8" param = "float" returnType = "String" />
+	<function name = "sys_System_double2Str" id1 = "0" id2 = "9" param = "double" returnType = "String" />
+	<function name = "sys_System_compareBytes" id1 = "0" id2 = "10" param = "byte[] int byte[] int int" returnType = "int" />
+	<function name = "sys_System_sleep" id1 = "0" id2 = "11" param = "int" returnType = "void" />
+	<function name = "sys_System_exec" id1 = "0" id2 = "12" param = "String" returnType = "int" />
+	<function name = "sys_System_rand" id1 = "0" id2 = "13" param = "" returnType = "int" />
+	<function name = "sys_System_ticks" id1 = "0" id2 = "14" param = "" returnType = "long" />
+	<function name = "sys_System_exit" id1 = "0" id2 = "15" param = "" returnType = "void" />
+	
+	
+	<!-- Filesystem APIs -->
+	<function name = "sys_Filesystem_doSize" id1 = "1" id2 = "0" param = "String" returnType = "int" />
+	<function name = "sys_Filesystem_doOpen" id1 = "1" id2 = "1" param = "String String" returnType = "Obj" />	
+	<function name = "sys_Filesystem_doRead" id1 = "1" id2 = "2" param = "Obj" returnType = "int" />
+	<function name = "sys_Filesystem_doReadBytes" id1 = "1" id2 = "3" param = "Obj byte[] int int" returnType = "int" />
+	<function name = "sys_Filesystem_doWrite" id1 = "1" id2 = "4" param = "Obj int" returnType = "bool" />
+	<function name = "sys_Filesystem_doWriteBytes" id1 = "1" id2 = "5" param = "Obj byte[] int int" returnType = "bool" />
+	<function name = "sys_Filesystem_doSeek" id1 = "1" id2 = "6" param = "Obj int" returnType = "bool" />
+	<function name = "sys_Filesystem_doTell" id1 = "1" id2 = "7" param = "Obj" returnType = "int" />
+	<function name = "sys_Filesystem_doFlush" id1 = "1" id2 = "8" param = "Obj" returnType = "void" />
+	<function name = "sys_Filesystem_doClose" id1 = "1" id2 = "9" param = "Obj" returnType = "bool" />
+	
+	<!-- Graphic APSs -->
+	<function name = "graphic_UPaint_getWidth" id1 = "2" id2 = "0" param = "" returnType = "int" />
+	<function name = "graphic_UPaint_getHeight" id1 = "2" id2 = "1" param = "" returnType = "int" />
+	<function name = "graphic_UPaint_onOff" id1 = "2" id2 = "2" param = "boolean" returnType = "void" />
+	<function name = "graphic_UPaint_setPoint" id1 = "2" id2 = "3" param = "int int int" returnType = "void" />
+	<function name = "graphic_UPaint_getPoint" id1 = "2" id2 = "4" param = "int int" returnType = "int" />
+	<function name = "graphic_UPaint_fill" id1 = "2" id2 = "5" param = "int int int int int" returnType = "void" />
+	<function name = "graphic_UPaint_drawChar" id1 = "2" id2 = "6" param = "int int int int int" returnType = "void" />
+</native>
