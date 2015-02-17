@@ -2,3 +2,9 @@
 src 源码目录,子目录为package
 native.xml 虚拟机和API配置文件
 uol.exe 编译器win32执行文件
+
+编译器使用方法
+1. 安装java1.7
+2. 运行命令行，进入编译器所在目录，目录下确保src文件夹和native.xml存在。
+3. 输入uol回车。
+4. 输入uol --help 查看帮助
