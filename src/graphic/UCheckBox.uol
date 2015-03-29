@@ -1,0 +1,144 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** CheckBox 选择框
+*/
+public class UCheckBox adds UComponent
+{
+	private String text;
+	/*
+	** constructor
+	*/
+	public void UCheckBox(int x,int y,int w,int h,String s)
+	{
+		setXY(x,y);
+		setWH(w,h);
+		text = s;
+		setVisibility(true);
+	}
+	
+	@Override
+	public bool isInSelection(int x,int y)
+	{
+		if(x>(x_axis)&&x<(x_axis+width)&&y>(y_axis)&&y<(y_axis+height))
+			return true;
+		else
+			return false;
+	}
+
+	
+	@Override
+	public void onPaint()
+	{
+		if(getDoPaint()&&getVisibility())
+		{
+			setPaintRectArea(0,0);
+			if(getSelected())
+			{
+				Graphic.drawRect(x_axis,y_axis,x_axis+16,y_axis+16,Graphic.BLACK);
+				Graphic.drawRect(x_axis+1,y_axis+1,x_axis+15,y_axis+15,Graphic.GRAY);
+				Graphic.fill(x_axis+2,y_axis+2,x_axis+14,y_axis+14,Graphic.WHITE);
+				Graphic.drawLine(x_axis+3,y_axis+8,x_axis+8,y_axis+13,Graphic.BLACK);
+				Graphic.drawLine(x_axis+8,y_axis+13,x_axis+13,y_axis+3,Graphic.BLACK);
+				Graphic.drawText(x_axis+20,y_axis,16,Graphic.BLACK,text);
+			}
+			else
+			{
+				Graphic.drawRect(x_axis,y_axis,x_axis+16,y_axis+16,Graphic.BLACK);
+				Graphic.drawRect(x_axis+1,y_axis+1,x_axis+15,y_axis+15,Graphic.GRAY);
+				Graphic.fill(x_axis+2,y_axis+2,x_axis+14,y_axis+14,Graphic.WHITE);
+				Graphic.drawText(x_axis+20,y_axis,16,Graphic.BLACK,text);
+			}
+			setDoPaint(false);
+		}
+	}
+	
+	//触摸屏被按下
+	@Override
+	public void touchPressed(TouchEvent e)
+	{
+		if(isInSelection(e.getX(),e.getY()))
+		{
+			setPressed(true);
+			update();
+			if(getSelected())
+			{
+				setSelected(false);	
+			}
+			else
+			{
+				setSelected(true);
+			}
+			if(listener!=null)
+			{
+				event.setID(EventCode.CHECKBOX_PRESSED);
+				listener.actionPerformed(event);
+			}
+		}
+	}
+	
+	//松开触摸屏
+	@Override
+	public void touchReleased(TouchEvent e)
+	{
+		if(getPressed())
+		{
+			setPressed(false);
+			if(listener!=null)
+			{
+				event.setID(EventCode.CHECKBOX_RELEASED);
+				listener.actionPerformed(event);
+			}
+		}
+	}
+	
+	//触摸屏持续按下
+	@Override
+	public void touchHeld(TouchEvent e)
+	{
+	
+	}
+	
+	@Override
+	public void paintAll()
+	{
+		setDoPaintAll(true);
+		
+	}
+	
+	/*
+	** 更新控件
+	*/
+	@Override
+	public void update()
+	{
+		setDoPaint(true);
+		if(parent!=null)
+			parent.update();
+	}
+	
+	/*
+	** 添加子控件
+	*/
+	@Override
+	public void add(UComponent g)
+	{
+	
+	}
+	
+	/*
+	** 移除加子控件
+	*/
+	@Override
+	public void remove(UComponent g)
+	{
+	
+	}
+}

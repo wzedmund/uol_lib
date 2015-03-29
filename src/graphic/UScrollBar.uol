@@ -1,0 +1,348 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** Button 按键
+*/
+public class UScrollBar adds UComponent
+{
+	define int BAR_BG_COLOR = 0xEF5D;	
+	define int HORIZONTAL = 1;
+	define int VERTICAL = 2;
+	define int HORIZONTAL_VERTICAL = 3;
+	
+	private UComponent[] comp; //控件数组
+	private int compIndex; //窗口内控件数
+	private int x_off; //x轴偏移地址
+	private int y_off; //y轴偏移地址
+	private int orientation;
+	private int vmax;
+	private int hmax;
+	
+	private int y_vbar;
+	private int x_hbar;
+	
+	private int vbar_len;
+	
+	
+	private int hbar_len;
+	
+	private int bar_func;
+	
+	private bool isDrag;
+	/*
+	** button constructor
+	*/
+	public void UScrollBar(int x,int y,int w,int h,int size,int orientation,int vmax,int hmax)
+	{
+		y_vbar = 0;
+		x_hbar = 0;
+		ActionListener action;
+		setXY(x,y);
+		setWH(w,h);
+		setVisibility(true);
+		comp = new UComponent[size];
+		this.orientation = orientation;
+		this.vmax = vmax;
+		this.hmax = hmax;
+		
+		if(hmax<w) hmax = w;
+		if(vmax<h) vmax = h;
+		
+		
+		UButton LBtn;
+		UButton RBtn;
+		UButton UBtn;
+		UButton DBtn;
+		if(orientation == HORIZONTAL)
+		{
+			this.orientation = HORIZONTAL;
+			hbar_len = (int)(((float)w/(float)hmax)*w);
+		    LBtn = new UButton(0,h-20,20,20,"L");
+			RBtn = new UButton(w-20,h-20,20,20,"R");
+			LBtn.setStringCommand("L");
+			RBtn.setStringCommand("R");
+			LBtn.addActionListener(action);
+			RBtn.addActionListener(action);
+			
+			add((UComponent) LBtn);
+			add((UComponent) RBtn);
+		}
+		else if(orientation == VERTICAL)
+		{
+			this.orientation = VERTICAL;
+			vbar_len = (int)(((float)h/(float)vmax)*h);
+			UBtn = new UButton(w-20,0,20,20,"U");
+			DBtn = new UButton(w-20,h-20,20,20,"D");
+			UBtn.setStringCommand("U");
+			DBtn.setStringCommand("D");
+			UBtn.addActionListener(action);
+			DBtn.addActionListener(action);
+			
+			add((UComponent) UBtn);
+			add((UComponent) DBtn);
+		}
+		else if(orientation == HORIZONTAL_VERTICAL)
+		{
+			this.orientation = HORIZONTAL_VERTICAL;
+			vbar_len = (int)(((float)h/(float)vmax)*h);
+			UBtn = new UButton(w-20,0,20,20,"U");
+			DBtn = new UButton(w-20,h-20,20,20,"D");
+			UBtn.setStringCommand("U");
+			DBtn.setStringCommand("D");
+			UBtn.addActionListener(action);
+			DBtn.addActionListener(action);
+			
+			add((UComponent) UBtn);
+			add((UComponent) DBtn);
+			
+			hbar_len = (int)(((float)w/(float)hmax)*w);
+		    LBtn = new UButton(0,h-20,20,20,"L");
+			RBtn = new UButton(w-20,h-20,20,20,"R");
+			LBtn.setStringCommand("L");
+			RBtn.setStringCommand("R");
+			LBtn.addActionListener(action);
+			RBtn.addActionListener(action);
+			add((UComponent) LBtn);
+			add((UComponent) RBtn);
+		}
+		else
+		{
+			this.orientation = VERTICAL;
+			vbar_len = (int)(((float)h/(float)vmax)*h);
+			UBtn = new UButton(w-20,0,20,20,"U");
+			DBtn = new UButton(w-20,h-20,20,20,"D");
+			UBtn.setStringCommand("U");
+			DBtn.setStringCommand("D");
+			UBtn.addActionListener(action);
+			DBtn.addActionListener(action);
+			
+			add((UComponent) UBtn);
+			add((UComponent) DBtn);
+		}
+	}
+	
+	private void actionPerformed(ActionEvent e)
+	{
+		if(e.getID()==EventCode.BUTTON_PRESSED)
+		{
+			if(e.getStringCommand()=="L")
+			{
+			
+			}
+			else if(e.getStringCommand()=="R")
+			{
+			
+			}
+			else if(e.getStringCommand()=="U")
+			{
+			
+			}
+			else if(e.getStringCommand()=="D")
+			{
+			
+			}
+		}
+	}
+	
+	@Override
+	public bool isInSelection(int x,int y)
+	{
+		int x0,y0;
+		x0 = getX();
+		y0 = getY();
+		
+		if(x>x0&&x<(x0+width)&&y>y0&&y<(y0+height))
+			return true;
+		else
+			return false;
+	}
+	
+	private void paintBar()
+	{
+		int x0,y0;
+		x0 = getX();
+		y0 = getY();
+		
+		Graphic.fill(x0,y0+height-40,x0+20,y0+height-40,BAR_BG_COLOR);
+		int color;
+		if(getPressed())
+			color = Graphic.GRAY;
+		else
+			color = Graphic.LGRAY;
+		
+		if(orientation == HORIZONTAL)
+		{
+			Graphic.fill(x0+x_hbar+20,y0+height-20,x0+hbar_len+x_hbar,y0+height-20,color);
+			Graphic.drawRect(x0+x_hbar,y0+height-20,x0+hbar_len+x_hbar,y0+height-20,Graphic.BLACK);
+		}
+		else if(orientation == VERTICAL)
+		{	
+			Graphic.fill(x0-20+width,y0+y_vbar,x0+width,y0+y_vbar+vbar_len,color);
+			Graphic.drawRect(x0-20+width,y0+y_vbar,x0+width,y0+y_vbar+vbar_len,Graphic.BLACK);
+		}
+		else
+		{
+			Graphic.fill(x0+x_hbar,y0+height-20,x0+hbar_len+x_hbar,y0+height-20,color);
+			Graphic.drawRect(x0+x_hbar,y0+height-20,x0+hbar_len+x_hbar,y0+height-20,Graphic.BLACK);
+			
+			Graphic.fill(x0-20+width,y0+y_vbar,x0+width,y0+y_vbar+vbar_len,color);
+			Graphic.drawRect(x0-20+width,y0+y_vbar,x0+width,y0+y_vbar+vbar_len,Graphic.BLACK);
+		}
+	}
+	
+	@Override
+	public void onPaint()
+	{
+		int i;
+		if(getDoPaint()&&getVisibility())
+		{
+			setPaintRectArea(0,0);
+			paintBar();
+			for(i=0;i<compIndex;i++)
+			{
+				comp[i].onPaint();
+			}
+			setDoPaint(false);
+		}
+	}
+	
+	//触摸屏被按下
+	@Override
+	public void touchPressed(TouchEvent e)
+	{
+		if(isInSelection(e.getX(),e.getY())&&getVisibility())
+		{
+			//更新子控件
+			setPressed(true);
+			update();
+			if(listener!=null)
+			{
+				event.setID(EventCode.FRAME_PRESSED);
+				event.setComponent((UComponent)this);
+				listener.actionPerformed(event);
+			}
+			
+			int i;
+			for(i=0;i<compIndex;i++)
+			{
+				comp[i].touchPressed(e);
+			}
+			
+		}
+	}
+	
+	//松开触摸屏
+	@Override
+	public void touchReleased(TouchEvent e)
+	{
+		if(getPressed())
+		{
+			setPressed(false);
+			update();
+			if(listener!=null)
+			{
+				event.setID(EventCode.FRAME_RELEASED);
+				event.setComponent((UComponent)this);
+				listener.actionPerformed(event);
+			}
+			
+		
+			int i;
+			for(i=0;i<compIndex;i++)
+			{
+				comp[i].touchReleased(e);
+			}
+			
+		}
+	}
+	
+	//触摸屏持续按下
+	@Override
+	public void touchHeld(TouchEvent e)
+	{
+		int i;
+		if(getPressed())
+		{
+			if(isDrag)
+			{
+				parent.paintAll();
+				parent.update();
+			}
+			else
+			{
+				for(i=0;i<compIndex;i++)
+				{
+					comp[i].touchHeld(e);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void paintAll()
+	{
+		int i;
+		setDoPaintAll(true);
+		for(i=0;i<compIndex;i++)
+		{
+			comp[i].paintAll();
+		}
+	}
+	
+	/*
+	** 更新控件
+	*/
+	@Override
+	public void update()
+	{
+		setDoPaintChildren(true);
+		if(parent!=null)
+			parent.update();
+	}
+	
+	/*
+	** 添加一个GUI控件
+	*/
+	@Override
+	public void add(UComponent c)
+	{
+		if(compIndex<comp.length)
+		{
+			comp[compIndex++] = c;
+			c.setParent((UComponent)this);
+			c.paintAll();
+			update();
+		}
+	}
+	
+	/*
+	** 移除一个GUI控件
+	*/
+	@Override
+	public void remove(UComponent c)
+	{
+		int i;
+		int j;
+		if(c==null) return;
+		
+		for(i=0;i<compIndex;i++)
+		{
+			if(c == comp[i])
+			{
+				for(j=i;j<compIndex-1;j++)
+				{
+					comp[j] = comp[j+1]; 
+				}
+				compIndex = compIndex - 1;
+				update();
+			}
+		}
+	}
+}

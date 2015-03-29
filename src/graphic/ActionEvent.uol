@@ -1,15 +1,22 @@
 // Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
 // wzedmund@gmail.com
 // History:
 // 26/5/2014
+// 版本
 // 1.0.0
+
+/*
+** ActionEvent
+** GUI动作事件
+*/
 package graphic;
 import sys;
 
 public class ActionEvent
 {	
-	private int icmd;
-	private String scmd;
+	private int id;
+	private String command;
 	private UComponent comp;
 	
 	public void setComponent(UComponent g)
@@ -22,23 +29,32 @@ public class ActionEvent
 		return comp;
 	}
 	
-	public int getIntCommand()
+	/*
+	** 获取事件ID
+	*/
+	public int getID()
 	{
-		return icmd;
+		return id;
 	}
-
-	public void setIntCommand(int i)
+	/*
+	** 设置事件ID
+	*/
+	public void setID(int i)
 	{
-		icmd = i;
+		id = i;
 	}
-
+	/*
+	** 获取事件字符串命令
+	*/
 	public String getStringCommand()
 	{
-		return scmd;
+		return command;
 	}
-
+	/*
+	** 设置事件字符串命令
+	*/
 	public void setStringCommand(String s)
 	{
-		scmd = s;
+		command = s;
 	}
 }

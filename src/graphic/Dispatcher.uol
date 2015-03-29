@@ -1,0 +1,124 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+import util;
+/*
+** TouchDispatcher
+*/
+public class Dispatcher
+{
+	private List listener;
+	private List comp;
+	private static TouchEvent event = new TouchEvent();
+	
+	public native bool isTouch();
+	public native int touchX();
+	public native int touchY();
+	
+	public void Dispatcher()
+	{
+		listener = new List();
+		comp = new List();
+		touchThread();
+		paintThread();
+	}
+	
+	public void add(UComponent c)
+	{
+		comp.add(c);
+	}
+	
+	public void remove(UComponent c)
+	{
+	
+	}
+	
+	public void addTouchListener(UComponent lis)
+	{
+		listener.add(lis);
+	}
+	
+	public void deleteTouchListener(UComponent lis)
+	{
+	
+	}
+	
+	private interrupt void paintThread()
+	{
+		int i,len;
+		UComponent cp;
+		while(true)
+		{
+			len = comp.size();
+			for(i=0;i<len;i=i+1)
+			{
+				cp = (UComponent)comp.get(i);
+				cp.onPaint();
+			}
+			System.sleep(20);
+		}
+	}
+	
+	public interrupt void touchThread()
+	{
+		int i;
+		int hold_time = 0;
+		int len;
+		UComponent cp;
+		bool flag = false;
+		
+		while(true)
+		{
+			if(isTouch())
+			{
+				if(flag == false) 
+				{
+					len = listener.size();
+					for(i=0;i<len;i++)
+					{
+						event.setX(touchX());
+						event.setY(touchY());
+						cp = (UComponent)comp.get(i);
+						cp.touchPressed(event);
+					}
+					flag = true;
+				}
+				if(hold_time<=10) hold_time++;
+				if(hold_time>10)
+				{
+					len = listener.size();
+					for(i=0;i<len;i++)
+					{
+						event.setX(touchX());
+						event.setY(touchY());
+						cp = (UComponent)comp.get(i);
+						cp.touchHeld(event);
+					}
+				}
+			}
+			else
+			{
+				if(flag == true)
+				{
+					hold_time = 0;
+					flag = false;
+					len = listener.size();
+					for(i=0;i<len;i++)
+					{
+						event.setX(touchX());
+						event.setY(touchY());
+						cp = (UComponent)comp.get(i);
+						cp.touchReleased(event);
+					}
+				}
+			}
+			System.sleep(20);
+		}
+	}
+}

@@ -1,84 +1,113 @@
 // Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
 // wzedmund@gmail.com
 // History:
 // 26/5/2014
+// 版本
 // 1.0.0
 package graphic;
 import sys;
-
+/*
+** UComponent 模块，除窗体外所有控件必须添加此模块
+*/
 public module UComponent
 {
-	define int IS_PRESSED_MASK = 0x0001;
-	define int PAINT_ALL_MASK = 0x0002;
-	define int PAINT_CHILDREN_MASK = 0x0004;
-	define int IS_SELECTED_MASK = 0x0008;
-	define int IS_VISIBLE_MASK = 0x0010;
-
+	define int ISPRESSED_MASK = 0x0001;
+	define int DOPAINT_MASK = 0x0002;
+	define int DOPAINT_CHILDREN_MASK = 0x0004;
+	define int ISSELECTED_MASK = 0x0008;
+	define int ISVISIBLE_MASK = 0x0010;
+	define int DOPAINT_ALL_MASK = 0x0020;
+	
 	public int x_axis;
 	public int y_axis;
 	public int width;
 	public int height;
-	public int status;
 	public UComponent parent;
 	public ActionListener listener;
-	public ActionEvent event;
-
-	public abstract void onPaint();//initial state of painting
+	public ActionEvent event = new ActionEvent();
+	private int backgroundColor;
+	public String text;
+	public int status;
 	
-	public abstract void paintAll();//paint everything again	
 	
-	public abstract void paintChildren();//paint children components
+	public void setBackgroundColor(int v)
+	{
+		backgroundColor = v;
+		paintAll();
+	}
 	
+	public int getBackgroundColor()
+	{
+		return backgroundColor;
+	}
+	/*
+	** 画控件
+	*/
+	public abstract void onPaint();
+	/*
+	** 设置字符串命令
+	*/
+	public void setStringCommand(String s)
+	{
+		event.setStringCommand(s);
+	}
+	
+	/*
+	** 获取字符串命令
+	*/
+	public String getStringCommand()
+	{
+		return event.getStringCommand();
+	}
+	
+	/*
+	** 触摸区域是否在控件内
+	*/
 	public abstract bool isInSelection(int x,int y);
 	
-	public void setStatus(int i)
-	{
-		status = status | i;
-	}
-	
-	public void clearStatus(int i)
-	{
-		status = status & (~IS_SELECTED_MASK);
-	}	
-	
-	public bool getStatus(int i)
-	{
-		if((status&i)>0)
-			return true;
-		else
-			return false;
-	}
-	
+	/*
+	** 获取选中标志
+	*/
 	public bool getSelected()
 	{
-		if((status&IS_SELECTED_MASK)>0)
+		if((status&ISSELECTED_MASK)>0)
 			return true;
 		else
 			return false;
 	}
 	
+	/*
+	** 设置选中标志
+	*/
 	public void setSelected(bool sel)
 	{
 		if(sel!=getSelected())
 		{
 			if(sel)
 			{
-				status = status | IS_SELECTED_MASK;
+				status = status | ISSELECTED_MASK;
 			}
 			else
 			{
-				status = status & (~IS_SELECTED_MASK);
+				status = status & (~ISSELECTED_MASK);
 			}
 			paintAll();
 		}
 	}
 	
+	/*
+	** 设置控件初始位置
+	*/
 	public void setXY(int x,int y)
 	{
 		x_axis = x;
 		y_axis = y;
 	}
 	
+	/*
+	** 获取控件初始位置X
+	*/
 	public int getX()
 	{
 		if(parent!=null)
@@ -87,6 +116,9 @@ public module UComponent
 			return x_axis;
 	}
 	
+	/*
+	** 获取控件初始位置Y
+	*/
 	public int getY()
 	{
 		if(parent!=null)
@@ -95,27 +127,42 @@ public module UComponent
 			return y_axis;
 	}
 	
+	/*
+	** 设置控件初始位置
+	*/
 	public void setWH(int w,int h)
 	{
 		height = h;
 		width  = w;
 	}
 	
+	/*
+	** 获取控件初始位置X
+	*/
 	public int getWidth()
 	{
 		return width;
 	}
 	
+	/*
+	** 获取控件初始位置Y
+	*/
 	public int getHeight()
 	{
 		return height;
 	}
 	
+	//触摸屏被按下
 	public abstract void touchPressed(TouchEvent e);
 	
+	//松开触摸屏
 	public abstract void touchReleased(TouchEvent e);
 	
+	//触摸屏持续按下
 	public abstract void touchHeld(TouchEvent e);
+	
+	//更新控件图形
+	public abstract void update();
 	
 	public void setVisibility(bool v)
 	{
@@ -123,7 +170,7 @@ public module UComponent
 		{
 			if(getVisibility()==false)
 			{
-				status = status | IS_VISIBLE_MASK;
+				status = status | ISVISIBLE_MASK;
 				paintAll();
 				if(parent!=null)
 					parent.paintAll();
@@ -133,7 +180,7 @@ public module UComponent
 		{
 			if(getVisibility())
 			{
-				status = status & (~IS_VISIBLE_MASK);
+				status = status & (~ISVISIBLE_MASK);
 				paintAll();
 				if(parent!=null)
 					parent.paintAll();
@@ -141,21 +188,25 @@ public module UComponent
 		}
 	}
 	
+	//获取可见性
 	public bool getVisibility()
 	{
-		if((status&IS_VISIBLE_MASK)>0)
+		if((status&ISVISIBLE_MASK)>0)
 			return true;
 		else
 			return false;
 	}
 	
+	//绘制所有控件
+	public abstract void paintAll();
 	
-
+	//添加动作监听
 	public void addActionListener(ActionListener a)
 	{
 		listener = a;
 	}
 	
+	//移除动作监听
 	public void removeActionListener(ActionListener a)
 	{
 		if(listener == a)
@@ -164,35 +215,111 @@ public module UComponent
 		}
 	}
 	
+	//添加子控件
 	public abstract void add(UComponent g);
 	
+	//移除子控件
 	public abstract void remove(UComponent g);
 	
+	//设置父控件
 	public void setParent(UComponent g)
 	{
 		parent = g;
 	}
 	
+	//获取父控件
 	public UComponent getParent()
 	{
 		return parent;
+	}
+	
+	public void setPaintRectArea(int x,int y)
+	{
+		int x0,y0;
+		x0 = getX();
+		y0 = getY();
+	}
+	
+	public void setDoPaint(bool b)
+	{
+		if(b)
+		{
+			status = status | DOPAINT_MASK;
+		}
+		else
+		{
+			status = status & (~DOPAINT_MASK);
+		}
+	}
+	
+	public bool getDoPaint()
+	{
+		if((status&DOPAINT_MASK)>0)
+			return true;
+		else
+			return false;
+	}
+	
+	public void setDoPaintChildren(bool b)
+	{
+		if(b)
+		{
+			if(getDoPaintAll()==false)
+			{
+				status = status | DOPAINT_CHILDREN_MASK;
+			}
+			setDoPaint(true);
+		}
+		else
+		{
+			status = status & (~DOPAINT_CHILDREN_MASK);
+		}
+	}
+	
+	public bool getDoPaintChildren()
+	{
+		if((status&DOPAINT_CHILDREN_MASK)>0)
+			return true;
+		else
+			return false;
+	}
+	
+	public void setDoPaintAll(bool b)
+	{
+		if(b)
+		{
+			status = status | DOPAINT_ALL_MASK;
+			setDoPaint(true);
+		}
+		else
+		{
+			status = status & (~DOPAINT_ALL_MASK);
+		}
+	}
+	
+	public bool getDoPaintAll()
+	{
+		if((status&DOPAINT_ALL_MASK)>0)
+			return true;
+		else
+			return false;
 	}
 	
 	public void setPressed(bool b)
 	{
 		if(b)
 		{
-			status = status | IS_PRESSED_MASK;
+			status = status | ISPRESSED_MASK;
 		}
 		else
 		{
-			status = status & (~IS_PRESSED_MASK);
+			status = status & (~ISPRESSED_MASK);
 		}
 	}
 	
 	public bool getPressed()
 	{
-		if((status&IS_PRESSED_MASK)>0)
+		if((status&ISPRESSED_MASK)>0)
 			return true;
 		else
 			return false;

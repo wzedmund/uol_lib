@@ -1,0 +1,187 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** UTextBox
+*/
+public class UTextBox adds UComponent
+{
+	private String text;
+	
+	public void UTextBox(int x,int y,int w,int h)
+	{
+		setXY(x,y);
+		setWH(w,h);
+		setVisibility(true);
+		setBackgroundColor(Graphic.WHITE);
+	}
+	
+	@Override
+	public bool isInSelection(int x,int y)
+	{
+		int x0,y0,w,h,wp,hp,xp,yp;
+		x0 = getX();
+		y0 = getY();
+		
+		w = getWidth();
+		h = getHeight();
+		wp = parent.getWidth();
+		hp = parent.getHeight();
+		xp = parent.getX();
+		yp = parent.getY();
+		if(x0+w>=xp+wp) w = xp+wp-x0;
+		if(y0+h>=yp+hp) h = yp+hp-y0;
+		
+		if(x>x0&&x<(x0+w)&&y>y0&&y<(y0+h))
+			return true;
+		else
+			return false;
+	}
+	
+	public String getText()
+	{
+		return text;
+	}
+	
+	public void setText(String s)
+	{
+		text = s;
+		if(text!=null)
+		{
+			int w,h,x,y;
+			int org_w,org_h;
+			int xp,yp,wp,hp;
+			org_w = getWidth();
+			org_h = getHeight();
+			x = getX();
+			y = getY();
+			w = getWidth();
+			h = getHeight();
+			
+			xp = parent.getX();
+			yp = parent.getY();
+			wp = parent.getWidth();
+			hp = parent.getHeight();
+		
+			if(x>=xp+wp) x = xp+wp;
+			if(y>=yp+hp) y = yp+hp;
+			if(x+w>=xp+wp) w = xp+wp-x;
+			if(y+h>=yp+hp) h = yp+hp-y;
+			
+			Graphic.fill(x+2,y+2,x+w-2,y+h-2,getBackgroundColor());
+			Graphic.drawTextInRect(x+3,y+h/2-8,x,y,x+w,y+h,16,Graphic.BLACK,text);
+		}
+	}
+	
+	@Override
+	public void onPaint()
+	{
+		if(getDoPaint()&&getVisibility())
+		{
+			int w,h,x,y;
+			int org_w,org_h;
+			int xp,yp,wp,hp;
+			org_w = getWidth();
+			org_h = getHeight();
+			x = getX();
+			y = getY();
+			w = getWidth();
+			h = getHeight();
+			
+			xp = parent.getX();
+			yp = parent.getY();
+			wp = parent.getWidth();
+			hp = parent.getHeight();
+		
+			if(x>=xp+wp) x = xp+wp;
+			if(y>=yp+hp) y = yp+hp;
+			if(x+w>=xp+wp) w = xp+wp-x;
+			if(y+h>=yp+hp) h = yp+hp-y;
+			
+			if(getDoPaintAll())
+			{
+				Graphic.drawRectInRect(x,y,x+org_w,y+org_h,xp,yp,xp+wp,yp+hp,Graphic.BLACK);
+				Graphic.drawRectInRect(x+1,y+1,x+org_w-1,y+org_h-1,xp,yp,xp+wp,yp+hp,Graphic.GRAY);
+				Graphic.fill(x+2,y+2,x+w-2,y+h-2,getBackgroundColor());
+				setDoPaintAll(false);
+			}
+			setText(text);
+			setDoPaint(false);
+		}
+	}
+	
+	//触摸屏被按下
+	@Override
+	public void touchPressed(TouchEvent e)
+	{
+		if(isInSelection(e.getX(),e.getY()))
+		{
+			setPressed(true);
+			if(listener!=null)
+			{
+				event.setID(EventCode.TEXTBOX_PRESSED);
+				listener.actionPerformed(event);
+			}
+		}
+	}
+	
+	//松开触摸屏
+	@Override
+	public void touchReleased(TouchEvent e)
+	{
+		if(getPressed())
+		{
+			setPressed(false);
+			if(listener!=null)
+			{
+				event.setID(EventCode.TEXTBOX_RELEASED);
+				listener.actionPerformed(event);
+			}
+		}
+	}
+	
+	//触摸屏持续按下
+	@Override
+	public void touchHeld(TouchEvent e)
+	{
+	
+	}
+	
+	@Override
+	public void update()
+	{
+		setDoPaintChildren(true);
+		if(parent!=null)
+			parent.update();
+	}
+	
+	@Override
+	public void paintAll()
+	{
+		setDoPaintAll(true);
+	}
+	
+	/*
+	** 添加子控件
+	*/
+	@Override
+	public void add(UComponent g)
+	{
+	
+	}
+	
+	/*
+	** 移除加子控件
+	*/
+	@Override
+	public void remove(UComponent g)
+	{
+	
+	}
+}

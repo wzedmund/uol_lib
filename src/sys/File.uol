@@ -8,4 +8,5 @@ public class File
 {
 	public String name;
 	public Obj fp;
+	int num;
 }

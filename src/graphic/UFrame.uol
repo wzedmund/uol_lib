@@ -1,0 +1,189 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 17/6/2014
+// 版本
+// 1.0.1
+package graphic;
+import sys;
+import util;
+/*
+** Frame 窗体
+*/
+public class UFrame adds UComponent
+{
+	private String title;//窗口标题
+	
+	public bool isDrag; //是否被拖动
+	public List comp; //控件数组
+	
+	/*
+	** constructor
+	*/
+	public void UFrame(int x,int y,int w,int h,String s)
+	{
+		int width,height;
+		comp = new List();
+		isDrag = false;
+		setVisibility(true);
+		setSelected(false);
+		setXY(x,y);
+		setWH(w,h);
+		title = s;
+		setBackgroundColor(Graphic.WHITE);
+		Graphic.getRootFrame().add((UComponent)this);
+		//Graphic.getDispatcher().addTouchListener((UComponent)this);
+	}
+	
+	/*
+	** 添加一个GUI控件
+	*/
+	@Override
+	public void add(UComponent c)
+	{
+		int x,y;
+		int i;
+		comp.add(c);
+		c.setParent((UComponent)this);
+		c.paintAll();
+		update();
+	}
+	
+	/*
+	** 移除一个GUI控件
+	*/
+	@Override
+	public void remove(UComponent c)
+	{
+		
+	}
+	
+	/*
+	** 判断是否选中当前控件
+	*/
+	@Override
+	public bool isInSelection(int x,int y)
+	{
+		int x0,y0;
+		x0 = getX();
+		y0 = getY();
+	
+		if(x>x0&&x<(x0+width)&&y>y0&&y<(y0+20))
+		{
+			isDrag = true;
+			return true;
+		}
+		else if(x>x0&&x<(x0+width)&&y>(y0+20)&&y<(y0+height))
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/*
+	** 画窗体
+	*/
+	@Override
+	public void onPaint()
+	{
+		int i,len;
+		int x,y;
+		x = getX();
+		y = getY();
+		UComponent cp;
+		if(getDoPaintAll())
+		{
+			setDoPaintChildren(false);
+			Graphic.fill(x,y,x+width,y+height,getBackgroundColor());
+			len = comp.size();
+			for(i=0;i<len;i=i+1)
+			{
+				cp = (UComponent)comp.get(i);
+				if(cp!=null)
+				cp.onPaint();
+			}
+			setDoPaintAll(false);
+			
+		}
+		else if(getDoPaintChildren())
+		{
+			len = comp.size();
+			for(i=0;i<len;i=i+1)
+			{
+				cp = (UComponent)comp.get(i);
+				if(cp!=null)
+				cp.onPaint();
+			}
+			setDoPaintChildren(false);
+		}
+		setDoPaint(false);
+	}
+	
+	//触摸屏被按下
+	@Override
+	public void touchPressed(TouchEvent e)
+	{
+		int i,len;
+		UComponent cp;
+		len = comp.size();
+		for(i=0;i<len;i=i+1)
+		{
+			cp = (UComponent)comp.get(i);
+			cp.touchPressed(e);
+		}
+	}
+	
+	//松开触摸屏
+	@Override
+	public void touchReleased(TouchEvent e)
+	{
+		int i,len;
+		UComponent cp;
+		len = comp.size();
+		for(i=0;i<len;i=i+1)
+		{
+			cp = (UComponent)comp.get(i);
+			cp.touchReleased(e);
+		}
+	}
+	
+	//触摸屏持续按下
+	@Override
+	public void touchHeld(TouchEvent e)
+	{
+		int i,len;
+		UComponent cp;
+		len = comp.size();
+		for(i=0;i<len;i=i+1)
+		{
+			cp = (UComponent)comp.get(i);
+			cp.touchHeld(e);
+		}
+	}
+	
+	@Override
+	public void paintAll()
+	{
+		int i,len;
+		UComponent cp;
+		setDoPaintAll(true);
+		len = comp.size();
+		for(i=0;i<len;i=i+1)
+		{
+			cp = (UComponent)comp.get(i);
+			cp.paintAll();
+		}
+	}
+	
+	/*
+	** 更新控件
+	*/
+	@Override
+	public void update()
+	{
+		setDoPaintChildren(true);
+		if(parent!=null)
+			parent.update();
+	}
+}

@@ -1,0 +1,21 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** EventCode
+*/
+public class UPaintMsgCode
+{
+	define int Idle = 0; 
+	
+	define int Frame_Paint_All = 1;
+	define int Frame_Paint_Children = 2;
+	
+	define int Frame_Paint_Widget = 3;
+}

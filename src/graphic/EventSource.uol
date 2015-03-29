@@ -1,0 +1,33 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** EventSource
+*/
+public class EventSource
+{
+	define int BUTTON_DOWN = 1;
+	define int BUTTON_UP = 2;
+	
+	private int eventType;
+	
+	public int intCommand;
+	
+	public String stringCommand;
+	
+	public void setEventType(int type)
+	{
+		eventType = type;
+	}
+	
+	public int getEventType()
+	{
+		return eventType;
+	}
+}

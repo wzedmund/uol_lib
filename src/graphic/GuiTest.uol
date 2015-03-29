@@ -1,0 +1,166 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** test
+*/
+public class GuiTest
+{
+	UTextBox tb;
+	int first,second,result;
+	bool toggle = false;
+	int count = 0;
+	int sign;
+	public void calc()
+	{
+		UFrame frame = new UFrame(0,0,170,170,"win 1");
+		frame.setBackgroundColor(Graphic.BLACK);
+		
+		tb = new UTextBox(10,10,150,30);
+		
+		UButton b1 = new UButton(10,40,30,30,"1");
+		UButton b2 = new UButton(50,40,30,30,"2");
+		UButton b3 = new UButton(90,40,30,30,"3");
+		UButton bAdd = new UButton(130,40,30,30,"+");
+		
+		UButton b4 = new UButton(10,70,30,30,"4");
+		UButton b5 = new UButton(50,70,30,30,"5");
+		UButton b6 = new UButton(90,70,30,30,"6");
+		UButton bSub = new UButton(130,70,30,30,"-");
+		
+		UButton b7 = new UButton(10,100,30,30,"7");
+		UButton b8 = new UButton(50,100,30,30,"8");
+		UButton b9 = new UButton(90,100,30,30,"9");
+		UButton bMul = new UButton(130,100,30,30,"*");
+		
+		UButton b0 = new UButton(10,130,30,30,"0");
+		UButton bPt = new UButton(50,130,30,30,".");
+		UButton bAns = new UButton(90,130,30,30,"=");
+		UButton bDiv = new UButton(130,130,30,30,"/");
+
+		frame.add((UComponent)b1);
+		frame.add((UComponent)b2);
+		frame.add((UComponent)b3);
+		frame.add((UComponent)b4);
+		frame.add((UComponent)b5);
+		frame.add((UComponent)b6);
+		frame.add((UComponent)b7);
+		frame.add((UComponent)b8);
+		frame.add((UComponent)b9);
+		frame.add((UComponent)b0);
+		frame.add((UComponent)bPt);
+		frame.add((UComponent)bAns);
+		frame.add((UComponent)tb);
+		frame.add((UComponent)bAdd);
+		frame.add((UComponent)bSub);
+		frame.add((UComponent)bMul);
+		frame.add((UComponent)bDiv);
+		
+		
+		ActionListener buttonAction = new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if(e.getID()==EventCode.BUTTON_PRESSED)
+				{
+					if(e.getComponent().text.equals("="))
+					{
+						System.printStackIndex();
+						switch(sign)
+						{
+							case 1:
+								result = first + second;break;
+							case 2:
+								result = first - second;break;
+							case 3:
+								result = first * second;break;
+							case 4:
+								result = first / second;break;
+							default:
+						}
+						System.printStackIndex();
+						tb.setText(System.int2Str(result));
+						count = 0;
+						toggle=false;
+						first = 0;
+						second = 0;
+					}
+					else if(e.getComponent().text.equals("."))
+					{
+					
+					}
+					else if(e.getComponent().text.equals("+"))
+					{
+						toggle=true;
+						count = 0;
+						sign = 1;
+						
+					}
+					else if(e.getComponent().text.equals("-"))
+					{
+						toggle=true;
+						count = 0;
+						sign = 2;
+					}
+					else if(e.getComponent().text.equals("*"))
+					{
+						toggle=true;
+						count = 0;
+						sign = 3;
+					}
+					else if(e.getComponent().text.equals("/"))
+					{
+						toggle=true;
+						count = 0;
+						sign = 4;
+					}
+					else
+					{
+						if(toggle==false)
+						{
+							if(count<8)
+							{
+								first = first*10+e.getComponent().text.charAt(0)-48;
+								tb.setText(System.int2Str(first));
+								count++;
+							}
+						}
+						else
+						{
+							if(count<8)
+							{
+								second = second*10+e.getComponent().text.charAt(0)-48;
+								tb.setText(System.int2Str(second));
+								count++;
+							}
+						}
+					}
+				}
+			}
+		};
+		
+		b1.addActionListener(buttonAction);
+		b2.addActionListener(buttonAction);
+		b3.addActionListener(buttonAction);
+		b4.addActionListener(buttonAction);
+		b5.addActionListener(buttonAction);
+		b6.addActionListener(buttonAction);
+		b7.addActionListener(buttonAction);
+		b8.addActionListener(buttonAction);
+		b9.addActionListener(buttonAction);
+		b0.addActionListener(buttonAction);
+		bPt.addActionListener(buttonAction);
+		bAns.addActionListener(buttonAction);
+		bAdd.addActionListener(buttonAction);
+		bSub.addActionListener(buttonAction);
+		bMul.addActionListener(buttonAction);
+		bDiv.addActionListener(buttonAction);
+	}
+}

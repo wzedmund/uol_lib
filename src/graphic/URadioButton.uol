@@ -1,0 +1,148 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** RadioButton
+*/
+public class URadioButton adds  UComponent
+{
+	private String text;
+	
+	public void URadioButton(int x,int y,int w,int h,String s)
+	{
+		setXY(x,y);
+		setWH(w,h);
+		setVisibility(true);
+		text = s;
+	}
+	
+	@Override
+	public bool isInSelection(int x,int y)
+	{
+		if(x>x_axis&&x<(x_axis+width)&&y>y_axis&&y<(y_axis+height))
+			return true;
+		else
+			return false;
+	}
+	
+	@Override
+	public void onPaint()
+	{
+		if(getDoPaint())
+		{
+			setPaintRectArea(0,0);
+			if(getSelected())
+			{
+				Graphic.drawCircle(x_axis,y_axis,8,Graphic.BLACK);
+				Graphic.drawCircle(x_axis,y_axis,7,Graphic.LGRAY);
+				Graphic.fillCircle(x_axis,y_axis,6,Graphic.WHITE);
+				Graphic.fillCircle(x_axis,y_axis,4,Graphic.BLACK);
+				Graphic.drawText(x_axis+12,y_axis+height/2-8,16,Graphic.BLACK,text);
+			}
+			else
+			{
+				Graphic.drawCircle(x_axis,y_axis,8,Graphic.BLACK);
+				Graphic.drawCircle(x_axis,y_axis,7,Graphic.GRAY);
+				Graphic.fillCircle(x_axis,y_axis,6,Graphic.WHITE);
+				Graphic.drawText(x_axis+12,y_axis+height/2-8,16,Graphic.BLACK,text);
+			}
+			setDoPaint(false);
+		}
+	}
+	
+	//触摸屏被按下
+	@Override
+	public void touchPressed(TouchEvent e)
+	{
+		if(isInSelection(e.getX(),e.getY())&&getSelected()==false)
+		{
+			setSelected(true);
+			setPressed(true);
+			update();
+			if(listener!=null)
+			{
+				event.setID(EventCode.RADIOBUTTON_PRESSED);
+				listener.actionPerformed(event);
+			}
+		}
+	}
+	
+	//松开触摸屏
+	@Override
+	public void touchReleased(TouchEvent e)
+	{
+		if(getPressed())
+		{
+			setPressed(false);
+			if(listener!=null)
+			{
+				event.setID(EventCode.RADIOBUTTON_RELEASED);
+				listener.actionPerformed(event);
+			}
+			update();
+		}
+	}
+	
+	//触摸屏持续按下
+	@Override
+	public void touchHeld(TouchEvent e)
+	{
+		if(getPressed())
+		{
+			if(isInSelection(e.getX(),e.getY()))
+			{
+				if(listener!=null)
+				{
+					event.setID(EventCode.RADIOBUTTON_HELD);
+					listener.actionPerformed(event);
+				}
+			}
+			else
+			{
+				setPressed(false);
+				update();
+			}
+		}
+	}
+	
+	/*
+	** 更新控件
+	*/
+	@Override
+	public void update()
+	{
+		setDoPaint(true);
+	}
+	
+	@Override
+	public void paintAll()
+	{
+		setDoPaint(true);
+		if(parent!=null)
+			parent.update();
+	}
+	
+	/*
+	** 添加子控件
+	*/
+	@Override
+	public void add(UComponent g)
+	{
+	
+	}
+	
+	/*
+	** 移除加子控件
+	*/
+	@Override
+	public void remove(UComponent g)
+	{
+	
+	}
+}

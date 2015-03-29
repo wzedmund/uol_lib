@@ -1,0 +1,151 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 版本
+// 1.0.0
+package util;
+/*
+** List
+*/
+public class List
+{	
+	private int listIndex;
+	private ListNode last;
+	private ListNode first;
+	
+	/*
+	** constructor
+	*/	
+	public void List()
+	{
+	}
+	
+	/*
+	** Appends the specified node to the end of this list.
+	*/
+	public void add(obj node)
+	{
+		ListNode nullNode = null;
+		ListNode lastNode = last;
+        ListNode newNode = new ListNode(last,node,nullNode);
+        last = newNode;
+        if (lastNode == null)
+             first = newNode;
+        else
+             lastNode.next = newNode;
+        listIndex++;
+	}
+	
+	/*
+	** remove the node at the specified position in this list.
+	*/
+	public bool remove(int index) 
+	{
+        if(index >= listIndex)
+		{
+			return false;
+		}
+		else
+		{
+			removeNode(node(index));
+			listIndex--;
+			return true;
+		}  
+    }
+	 
+	private ListNode node(int index) 
+	{
+		int i;
+		ListNode node = first;
+		for (i = 0; i < index; i++)
+		{
+			node = (ListNode)node.next; 
+		}
+		return node;
+    }
+	
+	private void removeNode(ListNode node)
+	{
+		ListNode current = (ListNode)node.current;
+        ListNode next = (ListNode)node.next;
+        ListNode prev = (ListNode)node.previous;
+
+        if (prev == null) 
+		{
+            first = next;
+        } 
+		else 
+		{
+            prev.next = next;
+            node.previous = null;
+        }
+ 
+        if (next == null) 
+		{
+            last = prev;
+        } 
+		else 
+		{
+            next.previous = prev;
+            node.next = null;
+        }
+        node.current = null;
+	}
+	
+	/*
+	** get the number of elements in this list.
+	*/
+	public int size()
+	{
+		return listIndex;
+	}
+	
+	/*
+	** remove all of the elements from this list.
+	*/
+	public void clear()
+	{
+		ListNode x;
+		for (x = first; x != null;)
+		{
+			ListNode next = (ListNode)x.next;
+			x.current = null;
+			x.next = null;
+			x.previous = null;
+			x = next;
+		}
+		first = null;
+		last = null;
+		listIndex = 0;
+	}	
+	
+	/*
+	** Returns the element at the specified position in this list.
+	*/
+	public obj get(int index)
+	{
+		ListNode node = node(index);
+		return node.current;
+	}
+	
+	/*
+	** Returns true if this list contains the specified element.
+	*/
+	public bool contains(obj o)
+	{
+		ListNode x;
+		if(o!=null)
+		{
+			for(x = first;x!=null;x=x.next)
+			{
+				if(x.current == o)
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	
+}

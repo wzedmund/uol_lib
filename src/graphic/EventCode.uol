@@ -1,0 +1,44 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+
+/*
+** EventCode
+*/
+package graphic;
+
+
+public class EventCode
+{
+	define int TOUCH_PRESSED = 1; //触摸屏按下
+	define int TOUCH_RELEASED = 2;//触摸屏释放
+	define int TOUCH_HELD = 3;    //触摸屏按住
+	
+	define int BUTTON_PRESSED = 4;//button 按下
+	define int BUTTON_RELEASED = 5;//button 松开
+	define int BUTTON_HELD = 6;//button 松开
+	
+	define int RADIOBUTTON_PRESSED = 7;//radio button选择 
+	define int RADIOBUTTON_RELEASED = 8;//radio button选择 
+	define int RADIOBUTTON_HELD = 9;//radio button选择 
+	
+	define int CHECKBOX_PRESSED = 10;//item选中
+	define int CHECKBOX_RELEASED = 11;//item取消选中
+	define int CHECKBOX_HELD = 12;//item取消选中
+	
+	define int TEXTBOX_PRESSED = 13;
+	define int TEXTBOX_RELEASED = 14;
+	define int TEXTBOX_HELD = 15;
+	
+	define int FRAME_PRESSED = 16;
+	define int FRAME_RELEASED = 17;
+	define int FRAME_HELD = 18;
+	
+	define int LABEL_PRESSED = 19;
+	define int LABEL_RELEASED = 20;
+	define int LABEL_HELD = 21;
+}

@@ -38,24 +38,24 @@ public class PrintStream adds OutStream
 	
 	}
 	
-	public void print(char b)
+	public void println(char b)
 	{
 		printByte((byte)b);
 	}
 	
-	public void print(byte b)
+	public void println(byte b)
 	{
 		printByte(b);
 	}
 	
-	public void print(int i)
+	public void println(int i)
 	{
 		String s;
 		s = System.int2Str(i);
-		print(s);
+		println(s);
 	}
 	
-	public void print(byte[] b)
+	public void println(byte[] b)
 	{
 		int i;
 		int len = b.length;
@@ -63,9 +63,10 @@ public class PrintStream adds OutStream
 		{
 			printByte(b[i]);
 		}
+		newLine();
 	}
 	
-	public void print(char[] b)
+	public void println(char[] b)
 	{
 		int i;
 		int len = b.length;
@@ -73,17 +74,18 @@ public class PrintStream adds OutStream
 		{
 			printByte((byte)b[i]);
 		}
+		newLine();
 	}
 	
-	public void print(bool b)
+	public void println(bool b)
 	{
 		if(b)
-			print("true");
+			println("true");
 		else
-			print("false");
+			println("false");
 	}
 	
-	public void print(String s)
+	public void println(String s)
 	{
 		int i;
 		char[] b = s.getChars();
@@ -93,7 +95,8 @@ public class PrintStream adds OutStream
 			//stop printing if meet null terminator
 			if(b[i]==0) break;
 			printByte((byte)b[i]);
-		}	
+		}
+		newLine();		
 	}
 	
 	public void newLine()

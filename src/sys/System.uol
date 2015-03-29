@@ -43,56 +43,16 @@ public class System
 	public native void sleep(int time);
 	
 	//execute another program inside current program
-	public native int exec(String path);
+	//public native int exec(String path);
 	
 	//generate random int value
-	public native int rand();
+	//public native int rand();
 	
 	//get current cpu ticks
-	public native long ticks();
+	//public native long ticks();
 	
 	//exit current program
-	public native void exit();
+	//public native void exit();
 	
-	public interrupt void task()
-	{
-		while(true)
-		{
-			System.out.print("thread 1 per 1 sec\n");
-			sleep(1000);
-		}
-	}
-	
-	public interrupt void task1()
-	{
-		while(true)
-		{
-			System.out.print("thread 2 per 1.1 sec\n");
-			sleep(1100);
-		}
-	}
-	
-	public void tt(String s)
-	{
-		test t = new test()
-		{
-			@Override
-			public void print(String s)
-			{
-				System.out.print(s);
-			}
-		};
-		t.print(t.s);
-		System.out.print(true);
-	}
-	
-	public static void main()
-	{
-		System s = new System();
-		s.tt("");
-		while(true)
-		{
-			
-		}
-	}
+	public native void printStackIndex();
 }

@@ -1,0 +1,365 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 版本
+// 1.0.0
+
+/*
+** Graphic
+*/
+
+package graphic;
+import sys;
+
+public class Graphic
+{
+	define int BLACK = 0;
+	define int WHITE = 0xFFFF;
+	define int BLUE = 0x001F;
+	define int BRED = 0xF81F;
+	define int GRED = 0x07FF;
+	define int RED = 0xF800;
+	define int MAGENTA = 0xF81F;
+	define int GREEN = 0x07E0;
+	define int CYAN = 0x7FFF;
+	define int YELLOW = 0xFFE0;
+	define int BROWN = 0xBC40;
+	define int BRRED = 0xFC07;
+	define int GRAY = 0x8430;
+	define int LGRAY = 0XC618;
+	
+	//获取屏幕宽度
+	public native int getWidth();
+	//获取屏幕高度
+	public native int getHeight();
+	//屏幕开关
+	public native void onOff(bool v);
+	//画一个像素点
+	public native void setPoint(int x,int y,int color);
+	//读取一个像素点
+	public native int getPoint(int x,int y);
+	//矩形填充
+	public native void fill(int x1,int y1,int x2,int y2,int color);
+	//画一个字符
+	public native void drawChar(int x,int y,int c,int font,int color);
+	
+	public native void clear(int color);
+	
+	private static Dispatcher dispatcher;
+	private static URootFrame rootFrame;
+	
+	public static void init()
+	{
+		dispatcher = new Dispatcher();
+		rootFrame = new URootFrame(0,0,240,320,"root");
+		dispatcher.add((UComponent)rootFrame);
+	}
+	
+	public static URootFrame getRootFrame()
+	{
+		return rootFrame;
+	}
+	
+	public static Dispatcher getDispatcher()
+	{
+		return dispatcher;
+	}
+	/*
+	** 画字符串
+	*/
+	public static void drawText(int x,int y,int font,int color,String s)
+	{
+		char[] c;
+		int len,i,fontSize;
+		c = s.getChars();
+		len = s.length();
+		if(font == 12)
+			fontSize = 12;
+		else
+			fontSize = 16;
+		
+		for(i=0;i<len;i=i+1)
+		{
+			if(c[i]==0) break;
+			drawChar(x,y,(int)c[i],fontSize,color);
+			x=x+fontSize/2;
+		}
+	}
+	/*
+	** 画字符串在指定矩形范围内
+	*/
+	public static void drawTextInRect(int x,int y,int x0,int y0, int x1,int y1,int font,int color,String s)
+	{
+		char[] c;
+		int len,i,fontSize;
+		c = s.getChars();
+		len = s.length();
+		if(font == 12)
+			fontSize = 12;
+		else
+			fontSize = 16;
+		
+		if(y1-y0<=16) return;
+		if(x0>=x1||y0>=y1) return;
+			
+		for(i=0;i<len;i=i+1)
+		{
+			if(c[i]==0) break;
+			if(x<(x1-fontSize/2)&&x>x0)
+			{
+				drawChar(x,y,(int)c[i],fontSize,color);
+			}
+			x=x+fontSize/2;
+		}
+	}
+	
+	/*
+	** 画直线
+	*/
+	public static void drawLine(int x1,int y1,int x2,int y2,int color)
+	{	
+		if(x1<0) x1=0;
+		if(y1<0) y1=0;
+		if(x2<0) x2=0;
+		if(y2<0) y2=0;
+		
+		if(x1>=getWidth()) x1=getWidth();
+		if(y1>=getHeight()) y1=getHeight();
+		if(x2>=getWidth()) x2=getWidth();
+		if(y2>=getHeight()) y2=getHeight();
+		
+		int t; 
+		int xerr=0,yerr=0,delta_x,delta_y,distance; 
+		int incx,incy,uRow,uCol; 
+
+		delta_x=x2-x1;
+		delta_y=y2-y1; 
+		uRow=x1; 
+		uCol=y1; 
+		
+		if(delta_x>0) incx=1; 
+		else if(delta_x==0)incx=0; 
+		else 
+		{
+			incx = -1;
+			delta_x = -delta_x;
+		} 
+		if(delta_y>0)incy=1; 
+		else if(delta_y==0)incy=0;
+		else
+		{
+			incy=-1;
+			delta_y = -delta_y;
+		} 
+		if( delta_x>delta_y)distance=delta_x;
+		else distance=delta_y; 
+		
+		for(t=0;t<=distance+1;t++ )
+		{  
+			setPoint(uRow,uCol,color);
+			xerr = xerr + delta_x ; 
+			yerr = yerr + delta_y ; 
+			if(xerr>distance) 
+			{ 
+				xerr = xerr - distance; 
+				uRow = uRow + incx; 
+			} 
+			if(yerr>distance) 
+			{ 
+				yerr = yerr - distance; 
+				uCol = uCol + incy; 
+			} 
+		}  
+	}
+	
+	public static void drawLineInRect(int x1,int y1,int x2,int y2,int xx0,int yy0,int xx1,int yy1,int color)
+	{	
+		if(x1<0) x1=0;
+		if(y1<0) y1=0;
+		if(x2<0) x2=0;
+		if(y2<0) y2=0;
+		
+		if(x1>=getWidth()) x1=getWidth();
+		if(y1>=getHeight()) y1=getHeight();
+		if(x2>=getWidth()) x2=getWidth();
+		if(y2>=getHeight()) y2=getHeight();
+		
+		int t; 
+		int xerr=0,yerr=0,delta_x,delta_y,distance; 
+		int incx,incy,uRow,uCol; 
+
+		delta_x=x2-x1;
+		delta_y=y2-y1; 
+		uRow=x1; 
+		uCol=y1; 
+		
+		if(delta_x>0) incx=1; 
+		else if(delta_x==0)incx=0; 
+		else 
+		{
+			incx = -1;
+			delta_x = -delta_x;
+		} 
+		if(delta_y>0)incy=1; 
+		else if(delta_y==0)incy=0;
+		else
+		{
+			incy=-1;
+			delta_y = -delta_y;
+		} 
+		if( delta_x>delta_y)distance=delta_x;
+		else distance=delta_y; 
+		
+		for(t=0;t<=distance+1;t++ )
+		{  
+			setPointInRect(uRow,uCol,xx0,yy0,xx1,yy1,color);
+			xerr = xerr + delta_x ; 
+			yerr = yerr + delta_y ; 
+			if(xerr>distance) 
+			{ 
+				xerr = xerr - distance; 
+				uRow = uRow + incx; 
+			} 
+			if(yerr>distance) 
+			{ 
+				yerr = yerr - distance; 
+				uCol = uCol + incy; 
+			} 
+		}  
+	}
+	/*
+	** 画矩形
+	*/
+	public static void drawRect(int x1,int y1,int x2,int y2,int color)
+	{
+		if(x1<0) x1=0;
+		if(y1<0) y1=0;
+		if(x2<0) x2=0;
+		if(y2<0) y2=0;
+		
+		if(x1>=getWidth()) x1=getWidth();
+		if(y1>=getHeight()) y1=getHeight();
+		if(x2>=getWidth()) x2=getWidth();
+		if(y2>=getHeight()) y2=getHeight();
+		int i;
+		
+		for(i=0;i<=x2-x1;i++)
+		{
+			setPoint(x1+i,y1,color);
+			setPoint(x1+i,y2,color);
+		}
+		
+		for(i=0;i<=y2-y1;i++)
+		{
+			setPoint(x1,y1+i,color);
+			setPoint(x2,y1+i,color);
+		}
+	}
+	
+	public static void setPointInRect(int x,int y,int x0,int y0,int x1,int y1,int color)
+	{
+		if((x>x0&&x<x1)&&(y>y0&&y<y1))
+			setPoint(x,y,color);
+	}
+	
+	/*
+	** 画矩形
+	*/
+	public static void drawRectInRect(int x1,int y1,int x2,int y2,int xx0,int yy0,int xx1,int yy1,int color)
+	{
+		if(x1<0) x1=0;
+		if(y1<0) y1=0;
+		if(x2<0) x2=0;
+		if(y2<0) y2=0;
+		
+		if(x1>=getWidth()) x1=getWidth();
+		if(y1>=getHeight()) y1=getHeight();
+		if(x2>=getWidth()) x2=getWidth();
+		if(y2>=getHeight()) y2=getHeight();
+		int i;
+		
+		for(i=0;i<=x2-x1;i++)
+		{
+			setPointInRect(x1+i,y1,xx0,yy0,xx1,yy1,color);
+			setPointInRect(x1+i,y2,xx0,yy0,xx1,yy1,color);
+		}
+		
+		for(i=0;i<=y2-y1;i++)
+		{
+			setPointInRect(x1,y1+i,xx0,yy0,xx1,yy1,color);
+			setPointInRect(x2,y1+i,xx0,yy0,xx1,yy1,color);
+		}
+	}
+	
+	/*
+	** 画圆
+	*/
+	public static void drawCircle(int xc, int yc, int r,int c) 
+	{
+		if (xc + r < 0 || xc - r >= getWidth() || yc + r < 0 || yc - r >= getHeight()) return;
+	 
+		int x = 0, y = r, yi, d;
+		d = 3 - 2 * r;
+	 
+		
+		while (x <= y) 
+		{
+			setPoint(xc + x, yc + y, c);
+			setPoint(xc - x, yc + y, c);
+			setPoint(xc + x, yc - y, c);
+			setPoint(xc - x, yc - y, c);
+			setPoint(xc + y, yc + x, c);
+			setPoint(xc - y, yc + x, c);
+			setPoint(xc + y, yc - x, c);
+			setPoint(xc - y, yc - x, c);
+			if (d < 0) 
+			{
+				d = d + 4 * x + 6;
+			} 
+			else 
+			{
+				d = d + 4 * (x - y) + 10;
+				y --;
+			}
+			x++;
+		}
+		
+	}
+	
+	/*
+	** 填充圆
+	*/
+	public static void fillCircle(int xc, int yc, int r,int c) 
+	{
+		if (xc + r < 0 || xc - r >= getWidth() || yc + r < 0 || yc - r >= getHeight()) return;
+	 
+		int x = 0, y = r, yi, d;
+		d = 3 - 2 * r;
+	 
+		
+		while (x <= y) 
+		{
+            for (yi = x; yi <= y; yi ++)
+			{
+				setPoint(xc + x, yc + yi, c);
+				setPoint(xc - x, yc + yi, c);
+				setPoint(xc + x, yc - yi, c);
+				setPoint(xc - x, yc - yi, c);
+				setPoint(xc + yi, yc + x, c);
+				setPoint(xc - yi, yc + x, c);
+				setPoint(xc + yi, yc - x, c);
+				setPoint(xc - yi, yc - x, c);
+			}
+ 
+            if (d < 0) {
+                d = d + 4 * x + 6;
+            } else {
+                d = d + 4 * (x - y) + 10;
+                y --;
+            }
+            x++;
+        }
+	}
+}

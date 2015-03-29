@@ -1,0 +1,143 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** Label
+*/
+public class ULabel adds UComponent
+{
+	private String text;
+	private bool doPaint;
+	private bool isPressed;
+	
+	public void ULabel(int x,int y,int w,int h,String s)
+	{
+		setXY(x,y);
+		setWH(w,h);
+		setVisibility(true);
+		text = s;
+	}
+	
+	@Override
+	public bool isInSelection(int x,int y)
+	{
+		int x0,y0;
+		x0 = getX();
+		y0 = getY();
+		if(x>x0&&x<(x0+width)&&y>y0&&y<(y0+height))
+			return true;
+		else
+			return false;
+	}
+	
+	@Override
+	public void onPaint()
+	{
+		if(doPaint)
+		{
+			int x0,y0;
+			x0 = getX();
+			y0 = getY();
+			setPaintRectArea(0,0);
+			Graphic.drawText(x0,y0,16,Graphic.BLACK,text);
+			doPaint = false;
+		}
+	}
+	
+	//触摸屏被按下
+	@Override
+	public void touchPressed(TouchEvent e)
+	{
+		if(isInSelection(e.getX(),e.getY())&&getVisibility())
+		{
+			isPressed = true;
+			update();
+			if(listener!=null)
+			{
+				event.setID(EventCode.LABEL_PRESSED);
+				listener.actionPerformed(event);
+			}
+		}
+	}
+	
+	//松开触摸屏
+	@Override
+	public void touchReleased(TouchEvent e)
+	{
+		if(isPressed==true)
+		{
+			isPressed = false;
+			if(listener!=null)
+			{
+				event.setID(EventCode.LABEL_RELEASED);
+				listener.actionPerformed(event);
+			}
+			update();
+		}
+	}
+	
+	//触摸屏持续按下
+	@Override
+	public void touchHeld(TouchEvent e)
+	{
+		if(isPressed==true)
+		{
+			if(isInSelection(e.getX(),e.getY()))
+			{
+				if(listener!=null)
+				{
+					event.setID(EventCode.LABEL_HELD);
+					listener.actionPerformed(event);
+				}
+			}
+			else
+			{
+				isPressed = false;
+				update();
+			}
+		}
+	}
+	
+	/*
+	** 更新控件
+	*/
+	@Override
+	public void update()
+	{
+		doPaint = true;
+		if(parent!=null)
+			parent.update();
+	}
+	
+	@Override
+	public void paintAll()
+	{
+		doPaint = true;
+		if(parent!=null)
+			parent.update();
+	}
+	
+	/*
+	** 添加子控件
+	*/
+	@Override
+	public void add(UComponent g)
+	{
+	
+	}
+	
+	/*
+	** 移除加子控件
+	*/
+	@Override
+	public void remove(UComponent g)
+	{
+	
+	}
+}

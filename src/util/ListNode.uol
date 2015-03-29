@@ -1,0 +1,26 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/4/2014
+// 版本
+// 1.0.0
+package util;
+/*
+** ListNode
+*/
+public class ListNode
+{	
+	public ListNode previous;
+	public obj current;
+	public ListNode next;
+	/*
+	** constructor
+	*/	
+	public void ListNode(ListNode Previous, obj Current, ListNode Next)
+	{
+		previous = Previous;
+		current = Current;
+		next = Next;
+	}
+}

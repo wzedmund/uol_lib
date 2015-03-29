@@ -3,9 +3,19 @@
 // History:21/12/2014
 // Version:1.0.0
 package sys;
-
+import graphic;
+import util;
 public module test
 {
-	public String s = "hello";
-	public abstract void print(String s);
+	public static void main()
+	{
+		Graphic.clear(Graphic.WHITE);
+		Graphic.init();
+		GuiTest test = new GuiTest();
+		test.calc();
+		while(true)
+		{
+			
+		}
+	}
 }

@@ -1,0 +1,42 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+package graphic;
+import sys;
+/*
+** TouchEvent
+*/
+public class TouchEvent
+{
+	define int TOUCH_PRESSED = 1;
+	define int TOUCH_RELEASED = 2;
+	define int TOUCH_HELD = 3;
+	
+	private int x;
+	private int y;
+	
+	public int getX()
+	{
+		return x;
+	}
+	
+	public void setX(int i)
+	{
+		x = i;
+	}
+	
+	public int getY()
+	{
+		return y;
+	}
+	
+	public void setY(int i)
+	{
+		y = i;
+	}
+	
+}

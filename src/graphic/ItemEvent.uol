@@ -1,0 +1,51 @@
+// Copyright (c) 2013 Zhe Wang
+// 如有疑问，欢迎发邮件到下面的邮箱：
+// wzedmund@gmail.com
+// History:
+// 26/5/2014
+// 版本
+// 1.0.0
+
+/*
+** ItemEvent item事件
+*/
+package graphic;
+import sys;
+
+public class ItemEvent
+{	
+	private obj item;
+	public int stateChange;
+	public int id;
+	public String command;
+	
+	public String getStringCommand()
+	{
+		return command;
+	}
+	
+	public void setStringCommand(String s)
+	{
+	    command = s;
+	}
+	
+	public int getID()
+	{
+		return id;
+	}
+	
+	public void setID(int i)
+	{
+		id = i;
+	}
+	
+	public obj getItem()
+	{
+		return item;
+	}
+	
+	public int getStateChange()
+	{
+		return stateChange;
+	}
+}
